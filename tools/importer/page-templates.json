@@ -1,0 +1,113 @@
+{
+  "templates": [
+    {
+      "name": "homepage",
+      "description": "AA Insurance homepage with hero banner, product grid, featured cards, announcements, value propositions, and trust bar",
+      "urls": [
+        "https://www.aainsurance.co.nz/"
+      ],
+      "blocks": [
+        {
+          "name": "hero-promo",
+          "instances": [
+            ".hero-abl.hero-abl--style-default"
+          ]
+        },
+        {
+          "name": "cards-product",
+          "instances": [
+            ".columns.mobile-lower-50"
+          ]
+        },
+        {
+          "name": "cards-featured",
+          "instances": [
+            ".card-grid .card-grid-columns-1"
+          ]
+        },
+        {
+          "name": "cards-announce",
+          "instances": [
+            ".card-grid .card-grid-columns-3"
+          ]
+        },
+        {
+          "name": "columns-value",
+          "instances": [
+            ".columns.why-choose-aai-footer"
+          ]
+        },
+        {
+          "name": "columns-trust",
+          "instances": [
+            ".columns.text__align-center"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-hero",
+          "name": "Hero Banner",
+          "selector": ".hero-abl.hero-abl--style-default",
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-products",
+          "name": "Product Grid",
+          "selector": ".columns.mobile-lower-50",
+          "style": null,
+          "blocks": [
+            "cards-product"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-featured",
+          "name": "Featured Card",
+          "selector": ".card-grid:has(.card-grid-columns-1)",
+          "style": null,
+          "blocks": [
+            "cards-featured"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-announcements",
+          "name": "Announcement Cards",
+          "selector": ".card-grid:has(.card-grid-columns-3)",
+          "style": null,
+          "blocks": [
+            "cards-announce"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-why-choose",
+          "name": "Why Choose AA Insurance",
+          "selector": ".columns.why-choose-aai-footer",
+          "style": null,
+          "blocks": [
+            "columns-value"
+          ],
+          "defaultContent": [
+            ".columns__heading.center"
+          ]
+        },
+        {
+          "id": "section-trust",
+          "name": "Trust Bar",
+          "selector": ".columns.text__align-center",
+          "style": null,
+          "blocks": [
+            "columns-trust"
+          ],
+          "defaultContent": []
+        }
+      ]
+    }
+  ]
+}

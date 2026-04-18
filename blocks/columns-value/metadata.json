@@ -1,0 +1,39 @@
+{
+  "variantName": "columns-value",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-04-17T10:33:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.aainsurance.co.nz/",
+    "originPage": "homepage",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "value-proposition",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + heading + paragraph + link (3 columns)",
+    "buttonCount": 0,
+    "imageCount": 3
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "value proposition sections",
+      "feature highlight columns",
+      "why-choose-us sections"
+    ],
+    "notSuitableFor": [
+      "image-heavy layouts",
+      "text-only columns",
+      "comparison tables"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-04-17T10:33:00.000Z"
+  }
+}
