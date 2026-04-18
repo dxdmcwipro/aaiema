@@ -1,33 +1,45 @@
 .columns-value > div {
   display: flex;
   flex-direction: column;
-}
-
-.columns-value img {
-  width: 100%;
+  gap: 32px;
 }
 
 .columns-value > div > div {
-  order: 1;
+  text-align: center;
 }
 
-.columns-value > div > .columns-value-img-col {
-  order: 0;
+.columns-value img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-bottom: 16px;
 }
 
-.columns-value > div > .columns-value-img-col img {
-  display: block;
+.columns-value h6 {
+  font-size: 18px;
+  color: var(--dark-color);
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.columns-value p {
+  color: var(--text-color-light);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.columns-value a {
+  color: var(--link-color);
+  font-weight: 700;
 }
 
 @media (width >= 900px) {
   .columns-value > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+    flex-direction: row;
+    gap: 48px;
   }
 
   .columns-value > div > div {
     flex: 1;
-    order: unset;
   }
 }

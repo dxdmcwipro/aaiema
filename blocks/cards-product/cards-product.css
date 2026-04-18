@@ -3,25 +3,90 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
 
 .cards-product > ul > li {
-  border: 1px solid #dadada;
   background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  transition: box-shadow var(--transition-base);
 }
 
-.cards-product .cards-product-card-body {
-  margin: 16px;
+.cards-product > ul > li:hover {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 }
 
 .cards-product .cards-product-card-image {
   line-height: 0;
+  margin-bottom: 8px;
 }
 
-.cards-product > ul > li img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+.cards-product .cards-product-card-image img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.cards-product .cards-product-card-body {
+  font-size: 14px;
+}
+
+.cards-product .cards-product-card-body a {
+  color: var(--link-color);
+  font-weight: 400;
+}
+
+.cards-product .cards-product-card-body strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cards-product .cards-product-card-body strong a {
+  color: var(--dark-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cards-product .cards-product-card-body strong a:hover {
+  color: var(--link-color);
+}
+
+.cards-product .cards-product-card-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
+.cards-product .cards-product-card-body ul li {
+  margin-bottom: 4px;
+}
+
+.cards-product .cards-product-card-body em {
+  display: block;
+  font-size: 11px;
+  color: var(--text-color-muted);
+  margin-top: 4px;
+}
+
+@media (width >= 600px) {
+  .cards-product > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .cards-product > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (width >= 1200px) {
+  .cards-product > ul {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
