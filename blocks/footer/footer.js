@@ -1,158 +1,234 @@
+ /**
+ * AA Insurance – Footer Block
+ * AEM EDS / da.live
+ *
+ * Expects a footer fragment page authored as a Google Doc / Word Doc table:
+ *
+ * ┌─────────────────────────────────────────────────────────────────┐
+ * │ Footer                                                          │
+ * ├──────────────┬──────────────────┬────────────────┬─────────────┤
+ * │ Insurance    │ Tools & Guidance │ Manage policy  │ About AA    │
+ * │ Car Insurance│ Insurance Calc   │ Make a Claim   │ About us    │
+ * │ …            │ …                │ …              │ …           │
+ * ├─────────────────────────────────────────────────────────────────┤
+ * │ social | facebook | instagram | tiktok | linkedin | youtube |  │
+ * │ email | shielded-site                                           │
+ * ├─────────────────────────────────────────────────────────────────┤
+ * │ legal | Financial Strength | Online T&Cs | … | Sitemap         │
+ * ├─────────────────────────────────────────────────────────────────┤
+ * │ copyright | © AA Insurance 2026                                 │
+ * └─────────────────────────────────────────────────────────────────┘
+ *
+ * Alternatively, the fragment can use heading + list markup (plain HTML
+ * authored output from da.live) which this decorator also handles.
+ */
+
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-function buildSocialIcon(name, href) {
-  const icons = {
-    facebook: '<svg viewBox="0 0 320 512"><path fill="currentColor" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>',
-    instagram: '<svg viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>',
-    tiktok: '<svg viewBox="0 0 448 512"><path fill="currentColor" d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V278.2a74.62 74.62 0 1 0 52.23 71.18V0l88 0a121.18 121.18 0 0 0 1.86 22.17A122.18 122.18 0 0 0 381 102.39a121.43 121.43 0 0 0 67 20.14Z"/></svg>',
-    linkedin: '<svg viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>',
-    youtube: '<svg viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>',
-    email: '<svg viewBox="0 0 512 512"><path fill="currentColor" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>',
-  };
-  const a = document.createElement('a');
-  a.href = href;
-  a.className = 'footer-social-btn';
-  a.setAttribute('aria-label', name);
-  a.setAttribute('target', '_blank');
-  a.setAttribute('rel', 'noopener noreferrer');
-  a.innerHTML = icons[name] || '';
-  return a;
-}
-
-const SOCIAL_MAP = {
-  facebook: 'https://www.facebook.com/AAInsuranceNZ/',
-  instagram: 'https://www.instagram.com/aainsurancenz/',
-  tiktok: 'https://www.tiktok.com/@aainsurancenz',
-  linkedin: 'https://www.linkedin.com/company/aa-insurance-ltd',
-  youtube: 'https://www.youtube.com/user/aainsurancenz',
-  email: '/contact',
+/* ─── Social platform SVG icons (inline, no external dependency) ─── */
+const SOCIAL_ICONS = {
+  facebook: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Facebook"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987H7.898V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>`,
+  instagram: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>`,
+  tiktok: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="TikTok"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.28 8.28 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>`,
+  linkedin: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="LinkedIn"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`,
+  youtube: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="YouTube"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>`,
+  email: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="Email"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
 };
 
+/* ─── Bold link text patterns ─── */
+const BOLD_PATTERNS = ['make a complaint', 'send us a compliment'];
+
 /**
- * Find column cells in the fragment - looks for table cells (td) or
- * column divs that each contain a heading + list of links together.
+ * Wraps plain-text list items that match bold patterns.
  */
-function findColumnCells(section) {
-  // Try table cells first (columns block renders as div > div > div)
-  const rows = section.querySelectorAll(':scope > div > div > div');
-  if (rows.length >= 4) return [...rows];
-
-  // Fallback: direct child divs that contain both a heading and a list
-  const divs = [...section.querySelectorAll(':scope > div > div')];
-  const candidates = divs.filter((d) => d.querySelector('ul') && (d.querySelector('strong') || d.querySelector('h6') || d.querySelector('h2') || d.querySelector('h3')));
-  if (candidates.length >= 4) return candidates;
-
-  return [...section.querySelectorAll(':scope div > div')].filter((d) => d.querySelector('ul'));
+function applyBoldLinks(ul) {
+  ul.querySelectorAll('li a').forEach((a) => {
+    if (BOLD_PATTERNS.includes(a.textContent.trim().toLowerCase())) {
+      a.style.fontWeight = '700';
+    }
+  });
 }
 
 /**
- * loads and decorates the footer
- * @param {Element} block The footer block element
+ * Builds the social icons bar from a UL of platform names or hrefs.
+ * Expected authored format (one list item per platform):
+ *   - facebook | https://facebook.com/…
+ *   - instagram | https://instagram.com/…
+ *   …
+ *   - shielded-site | https://…
+ */
+function buildSocialRow(ul) {
+  const row = document.createElement('div');
+  row.className = 'footer-social';
+
+  ul.querySelectorAll('li').forEach((li) => {
+    const text = li.textContent.trim().toLowerCase();
+    const anchor = li.querySelector('a');
+    const href = anchor ? anchor.href : '#';
+
+    if (text.startsWith('shielded')) {
+      // Shielded site badge – keep as-is or render a placeholder
+      const badge = document.createElement('span');
+      badge.className = 'shielded-site';
+      badge.setAttribute('aria-label', 'Shielded Site');
+      if (anchor && anchor.querySelector('img')) {
+        badge.append(anchor.querySelector('img').cloneNode(true));
+      } else {
+        // text fallback
+        const a = document.createElement('a');
+        a.href = href;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.style.cssText = 'font-size:11px;font-weight:700;color:#131313;text-decoration:none;border:1.5px solid #131313;padding:2px 8px;border-radius:3px;';
+        a.textContent = 'Shielded Site';
+        badge.append(a);
+      }
+      row.append(badge);
+      return;
+    }
+
+    const platform = Object.keys(SOCIAL_ICONS).find((k) => text.includes(k));
+    if (!platform) return;
+
+    const a = document.createElement('a');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.setAttribute('aria-label', platform.charAt(0).toUpperCase() + platform.slice(1));
+    a.innerHTML = SOCIAL_ICONS[platform];
+    row.append(a);
+  });
+
+  return row;
+}
+
+/**
+ * Builds the legal links bar.
+ */
+function buildLegalRow(ul) {
+  const row = document.createElement('div');
+  row.className = 'footer-legal';
+  ul.querySelectorAll('li a').forEach((link) => {
+    const a = document.createElement('a');
+    a.href = link.href;
+    a.textContent = link.textContent.trim();
+    row.append(a);
+  });
+  return row;
+}
+
+/**
+ * Builds copyright line.
+ */
+function buildCopyrightRow(p) {
+  const row = document.createElement('div');
+  row.className = 'footer-copyright';
+  row.innerHTML = `<p>${p.innerHTML}</p>`;
+  return row;
+}
+
+/**
+ * Main decorator — processes the loaded fragment DOM.
+ *
+ * The fragment is expected to have:
+ *  1. One or more <div> sections, each containing:
+ *     - A heading (h2/h3/strong) + UL → nav column
+ *     - OR a UL with class/data hint "social" → social row
+ *     - OR a UL with class/data hint "legal" → legal row
+ *     - OR a <p> with class/data hint "copyright" → copyright
+ *
+ * The decorator is resilient: if no hints are present it uses
+ * position-based heuristics (last UL = legal, last p = copyright).
  */
 export default async function decorate(block) {
   const footerMeta = getMetadata('footer');
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
-  if (!fragment) return;
 
   block.textContent = '';
-  const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
-  const sections = [...footer.querySelectorAll(':scope > div')];
+  const wrapper = document.createElement('div');
+  wrapper.className = 'footer';
 
-  // Section 1: Link columns - find cells that each contain heading + links
-  if (sections[0]) {
-    sections[0].classList.add('footer-links');
-    const cells = findColumnCells(sections[0]);
-    if (cells.length > 0) {
-      const grid = document.createElement('div');
-      grid.className = 'footer-grid';
-      cells.forEach((cell) => {
+  /* Collect all top-level sections from fragment */
+  const sections = [...fragment.children];
+
+  const navWrapper = document.createElement('div');
+  navWrapper.className = 'footer-nav';
+
+  let socialRow = null;
+  let legalRow = null;
+  let copyrightRow = null;
+
+  sections.forEach((section) => {
+    const uls = section.querySelectorAll('ul');
+    const headings = section.querySelectorAll('h1,h2,h3,h4,h5,h6,strong');
+    const paras = section.querySelectorAll('p');
+
+    /* ── Detect section type by authored class or data attribute ── */
+    const sectionType = section.dataset.footerSection
+      || section.className.split(' ').find((c) => ['social', 'legal', 'copyright'].includes(c))
+      || '';
+
+    if (sectionType === 'social' || (uls.length === 1 && section.textContent.toLowerCase().includes('facebook'))) {
+      socialRow = buildSocialRow(uls[0]);
+      return;
+    }
+
+    if (sectionType === 'legal') {
+      legalRow = buildLegalRow(uls[0]);
+      return;
+    }
+
+    if (sectionType === 'copyright') {
+      const p = section.querySelector('p');
+      if (p) copyrightRow = buildCopyrightRow(p);
+      return;
+    }
+
+    /* ── Nav columns: each heading + UL pair → one column ── */
+    if (headings.length > 0 && uls.length > 0) {
+      /* Multiple columns inside one section */
+      const cols = section.querySelectorAll(':scope > div, :scope > p, :scope > ul');
+      /* Pair headings with their following UL */
+      headings.forEach((heading, i) => {
         const col = document.createElement('div');
-        col.className = 'footer-column';
-        // Find heading: strong, h6, h2, h3, or first p with strong
-        const heading = cell.querySelector('strong, h6, h2, h3');
-        if (heading) {
-          const headingEl = document.createElement('p');
-          headingEl.className = 'footer-col-heading';
-          headingEl.textContent = heading.textContent.trim();
-          col.append(headingEl);
+        col.className = 'footer-nav-column';
+        const h = document.createElement('p');
+        h.innerHTML = `<strong>${heading.textContent.trim()}</strong>`;
+        col.append(h);
+        /* Find the next sibling UL */
+        let ul = uls[i] || null;
+        if (ul) {
+          applyBoldLinks(ul);
+          col.append(ul.cloneNode(true));
         }
-        // Append the link list
-        const ul = cell.querySelector('ul');
-        if (ul) col.append(ul);
-        grid.append(col);
+        navWrapper.append(col);
       });
-      const wrapper = sections[0].querySelector(':scope > div');
-      if (wrapper) {
-        wrapper.textContent = '';
-        wrapper.append(grid);
-      }
+      return;
     }
-  }
 
-  // Section 2: Social icons - rebuild with inline SVG circular buttons
-  if (sections[1]) {
-    sections[1].classList.add('footer-social');
-    const socialRow = document.createElement('div');
-    socialRow.className = 'footer-social-row';
-    const links = sections[1].querySelectorAll('a');
-    links.forEach((link) => {
-      const text = link.textContent.trim().toLowerCase();
-      const key = Object.keys(SOCIAL_MAP).find((k) => text.includes(k));
-      if (key) {
-        socialRow.append(buildSocialIcon(key, SOCIAL_MAP[key]));
-      } else if (link.querySelector('img')) {
-        // Pass through image-based links (e.g. Shielded Site Icon)
-        link.className = 'footer-shield-icon';
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener noreferrer');
-        socialRow.append(link);
+    /* ── Fallback: plain section with just a UL (legal) or P (copyright) ── */
+    if (uls.length === 1 && headings.length === 0) {
+      const firstLinkText = uls[0].querySelector('a')?.textContent.toLowerCase() || '';
+      if (!legalRow) {
+        legalRow = buildLegalRow(uls[0]);
       }
-    });
-    // Also pass through standalone images not inside links
-    sections[1].querySelectorAll('img:not(a img)').forEach((img) => {
-      socialRow.append(img);
-    });
-    // Fallback if no links found at all
-    if (socialRow.children.length === 0) {
-      Object.entries(SOCIAL_MAP).forEach(([key, href]) => {
-        socialRow.append(buildSocialIcon(key, href));
-      });
+      return;
     }
-    const inner = sections[1].querySelector(':scope > div');
-    if (inner) {
-      inner.textContent = '';
-      inner.append(socialRow);
+
+    if (paras.length > 0 && uls.length === 0 && headings.length === 0) {
+      const lastP = paras[paras.length - 1];
+      if (!copyrightRow) copyrightRow = buildCopyrightRow(lastP);
     }
-  }
+  });
 
-  // Section 3: Legal links + copyright
-  if (sections[2]) {
-    sections[2].classList.add('footer-legal');
-    const inner = sections[2].querySelector(':scope > div') || sections[2];
-    const rebuilt = document.createElement('div');
+  /* ── Assemble ── */
+  if (navWrapper.children.length) wrapper.append(navWrapper);
+  if (socialRow) wrapper.append(socialRow);
+  if (legalRow) wrapper.append(legalRow);
+  if (copyrightRow) wrapper.append(copyrightRow);
 
-    [...inner.querySelectorAll('p')].forEach((p) => {
-      const links = [...p.querySelectorAll('a')];
-      if (links.length > 0) {
-        const legalRow = document.createElement('div');
-        legalRow.className = 'footer-legal-links';
-        links.forEach((a) => legalRow.append(a));
-        rebuilt.append(legalRow);
-      } else if (p.textContent.trim()) {
-        const copy = document.createElement('p');
-        copy.className = 'footer-copyright';
-        copy.textContent = p.textContent.trim();
-        rebuilt.append(copy);
-      }
-    });
-
-    inner.textContent = '';
-    inner.append(rebuilt);
-  }
-
-  block.append(footer);
+  block.append(wrapper);
 }

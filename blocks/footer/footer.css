@@ -1,139 +1,195 @@
+/* =============================================================
+   AA Insurance – Footer Block
+   AEM EDS / da.live
+   ============================================================= */
+
+:root {
+  --footer-bg: #ffd100;
+  --footer-text: #131313;
+  --footer-link-color: #131313;
+  --footer-link-hover: #000000;
+  --footer-font-size: 13px;
+  --footer-heading-size: 14px;
+  --footer-max-width: 1200px;
+}
+
+/* ── Outer shell ── */
 footer {
-  background-color: #ffd700;
-  color: #1a1a2e;
-  font-family: var(--body-font-family);
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  font-family: var(--body-font-family, roboto, sans-serif);
+  font-size: var(--footer-font-size);
+  line-height: 1.6;
 }
 
 footer .footer {
-  max-width: 1200px;
-  margin: auto;
-  padding: 48px 32px;
+  max-width: var(--footer-max-width);
+  margin: 0 auto;
+  padding: 40px 32px 24px;
 }
 
-/* Base footer link styles */
-footer .footer a {
-  color: #1a1a2e;
+/* ── Nav columns grid ── */
+footer .footer-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 24px;
+  padding-bottom: 32px;
+}
+
+footer .footer-nav-column h3,
+footer .footer-nav-column strong {
+  display: block;
+  font-family: var(--body-font-family, roboto, sans-serif);
+  font-size: var(--footer-heading-size);
+  font-weight: 700;
+  color: var(--footer-text);
+  margin: 0 0 12px 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+footer .footer-nav-column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+footer .footer-nav-column ul li {
+  margin-bottom: 4px;
+}
+
+footer .footer-nav-column ul li a,
+footer .footer-nav-column p a {
+  color: var(--footer-link-color);
   text-decoration: none;
+  font-size: var(--footer-font-size);
+  line-height: 1.6;
 }
 
-footer .footer a:hover {
+footer .footer-nav-column ul li a:hover,
+footer .footer-nav-column p a:hover {
+  text-decoration: underline;
+  color: var(--footer-link-hover);
+}
+
+/* Bold links (Make a complaint, Send us a compliment) */
+footer .footer-nav-column ul li a.bold,
+footer .footer-nav-column ul li.bold a,
+footer .footer-nav-column ul li a[data-bold] {
+  font-weight: 700;
+}
+
+/* ── Social icons row ── */
+footer .footer-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+footer .footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--footer-text);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+footer .footer-social a:hover {
+  opacity: 0.65;
+}
+
+footer .footer-social svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--footer-text);
+}
+
+footer .footer-social .shielded-site {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+footer .footer-social .shielded-site img {
+  height: 28px;
+  width: auto;
+}
+
+/* ── Legal links row ── */
+footer .footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 0;
+  padding: 16px 0 8px;
+}
+
+footer .footer-legal a {
+  color: var(--footer-link-color);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 0 12px;
+  border-right: 1px solid var(--footer-text);
+  line-height: 1.2;
+}
+
+footer .footer-legal a:last-child {
+  border-right: none;
+}
+
+footer .footer-legal a:hover {
   text-decoration: underline;
 }
 
-/* ---- 4-column link grid ---- */
-footer .footer .footer-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
+/* ── Copyright ── */
+footer .footer-copyright {
+  text-align: center;
+  font-size: 12px;
+  padding: 8px 0 4px;
+  color: var(--footer-text);
 }
 
-footer .footer .footer-column {
-  display: flex;
-  flex-direction: column;
-}
-
-footer .footer .footer-col-heading {
-  font-weight: 700;
-  font-size: 14px;
-  margin: 0 0 12px;
-  color: #1a1a2e;
-}
-
-footer .footer .footer-column ul {
-  list-style: none;
-  padding: 0;
+footer .footer-copyright p {
   margin: 0;
 }
 
-footer .footer .footer-column ul li {
-  font-size: 13px;
-  line-height: 2;
-  color: #1a1a2e;
-}
-
-/* ---- Social icons ---- */
-footer .footer .footer-social {
-  margin-top: 32px;
-  padding-top: 32px;
-  border-top: 1px solid rgb(0 0 0 / 15%);
-}
-
-footer .footer .footer-social-row {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-footer .footer .footer-social-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #1a1a2e;
-  color: #fff;
-  transition: opacity 0.2s ease;
-}
-
-footer .footer .footer-social-btn:hover {
-  opacity: 0.8;
-  text-decoration: none;
-}
-
-footer .footer .footer-social-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
-footer .footer .footer-shield-icon img {
-  height: 40px;
-  width: auto;
-  display: block;
-}
-
-/* ---- Legal links ---- */
-footer .footer .footer-legal {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid rgb(0 0 0 / 15%);
-  text-align: center;
-}
-
-footer .footer .footer-legal-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
-}
-
-footer .footer .footer-legal-links a {
-  white-space: nowrap;
-  font-size: 12px;
-}
-
-footer .footer .footer-legal p,
-footer .footer .footer-copyright {
-  margin: 16px 0 0;
-  font-size: 12px;
-  padding-bottom: 24px;
-  text-align: center;
-}
-
-/* ---- Responsive ---- */
-@media (width <= 768px) {
-  footer .footer .footer-grid {
+/* ── Responsive: tablet ── */
+@media (width < 900px) {
+  footer .footer-nav {
     grid-template-columns: repeat(2, 1fr);
+    gap: 24px 24px;
   }
 }
 
-@media (width <= 480px) {
+/* ── Responsive: mobile ── */
+@media (width < 600px) {
   footer .footer {
-    padding: 32px 20px;
+    padding: 32px 16px 16px;
   }
 
-  footer .footer .footer-grid {
+  footer .footer-nav {
     grid-template-columns: 1fr;
+    gap: 24px 0;
+  }
+
+  footer .footer-social {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  footer .footer-legal {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer .footer-legal a {
+    border-right: none;
+    padding: 2px 0;
   }
 }
