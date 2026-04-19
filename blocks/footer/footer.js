@@ -102,9 +102,21 @@ export default async function decorate(block) {
     links.forEach((link) => {
       const text = link.textContent.trim().toLowerCase();
       const key = Object.keys(SOCIAL_MAP).find((k) => text.includes(k));
-      if (key) socialRow.append(buildSocialIcon(key, SOCIAL_MAP[key]));
+      if (key) {
+        socialRow.append(buildSocialIcon(key, SOCIAL_MAP[key]));
+      } else if (link.querySelector('img')) {
+        // Pass through image-based links (e.g. Shielded Site Icon)
+        link.className = 'footer-shield-icon';
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+        socialRow.append(link);
+      }
     });
-    // Fallback if no text-based links found
+    // Also pass through standalone images not inside links
+    sections[1].querySelectorAll('img:not(a img)').forEach((img) => {
+      socialRow.append(img);
+    });
+    // Fallback if no links found at all
     if (socialRow.children.length === 0) {
       Object.entries(SOCIAL_MAP).forEach(([key, href]) => {
         socialRow.append(buildSocialIcon(key, href));
@@ -120,17 +132,26 @@ export default async function decorate(block) {
   // Section 3: Legal links + copyright
   if (sections[2]) {
     sections[2].classList.add('footer-legal');
-    // Wrap legal links in a flex container
-    const legalP = sections[2].querySelector('p');
-    if (legalP) {
-      const legalLinks = [...legalP.querySelectorAll('a')];
-      if (legalLinks.length > 0) {
+    const inner = sections[2].querySelector(':scope > div') || sections[2];
+    const rebuilt = document.createElement('div');
+
+    [...inner.querySelectorAll('p')].forEach((p) => {
+      const links = [...p.querySelectorAll('a')];
+      if (links.length > 0) {
         const legalRow = document.createElement('div');
         legalRow.className = 'footer-legal-links';
-        legalLinks.forEach((a) => legalRow.append(a));
-        legalP.replaceWith(legalRow);
+        links.forEach((a) => legalRow.append(a));
+        rebuilt.append(legalRow);
+      } else if (p.textContent.trim()) {
+        const copy = document.createElement('p');
+        copy.className = 'footer-copyright';
+        copy.textContent = p.textContent.trim();
+        rebuilt.append(copy);
       }
-    }
+    });
+
+    inner.textContent = '';
+    inner.append(rebuilt);
   }
 
   block.append(footer);

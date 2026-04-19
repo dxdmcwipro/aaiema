@@ -87,6 +87,12 @@ footer .footer .footer-social-btn svg {
   height: 18px;
 }
 
+footer .footer .footer-shield-icon img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 /* ---- Legal links ---- */
 footer .footer .footer-legal {
   margin-top: 32px;
@@ -107,10 +113,12 @@ footer .footer .footer-legal-links a {
   font-size: 12px;
 }
 
-footer .footer .footer-legal p {
+footer .footer .footer-legal p,
+footer .footer .footer-copyright {
   margin: 16px 0 0;
   font-size: 12px;
   padding-bottom: 24px;
+  text-align: center;
 }
 
 /* ---- Responsive ---- */
