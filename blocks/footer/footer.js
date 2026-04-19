@@ -30,6 +30,23 @@ const SOCIAL_MAP = {
 };
 
 /**
+ * Find column cells in the fragment - looks for table cells (td) or
+ * column divs that each contain a heading + list of links together.
+ */
+function findColumnCells(section) {
+  // Try table cells first (columns block renders as div > div > div)
+  const rows = section.querySelectorAll(':scope > div > div > div');
+  if (rows.length >= 4) return [...rows];
+
+  // Fallback: direct child divs that contain both a heading and a list
+  const divs = [...section.querySelectorAll(':scope > div > div')];
+  const candidates = divs.filter((d) => d.querySelector('ul') && (d.querySelector('strong') || d.querySelector('h6') || d.querySelector('h2') || d.querySelector('h3')));
+  if (candidates.length >= 4) return candidates;
+
+  return [...section.querySelectorAll(':scope div > div')].filter((d) => d.querySelector('ul'));
+}
+
+/**
  * loads and decorates the footer
  * @param {Element} block The footer block element
  */
@@ -45,13 +62,34 @@ export default async function decorate(block) {
 
   const sections = [...footer.querySelectorAll(':scope > div')];
 
-  // Section 1: Link columns grid
+  // Section 1: Link columns - find cells that each contain heading + links
   if (sections[0]) {
     sections[0].classList.add('footer-links');
-    const innerWrapper = sections[0].querySelector(':scope > div');
-    if (innerWrapper) {
-      const cols = innerWrapper.querySelectorAll(':scope > div');
-      cols.forEach((col) => col.classList.add('footer-col'));
+    const cells = findColumnCells(sections[0]);
+    if (cells.length > 0) {
+      const grid = document.createElement('div');
+      grid.className = 'footer-grid';
+      cells.forEach((cell) => {
+        const col = document.createElement('div');
+        col.className = 'footer-column';
+        // Find heading: strong, h6, h2, h3, or first p with strong
+        const heading = cell.querySelector('strong, h6, h2, h3');
+        if (heading) {
+          const headingEl = document.createElement('p');
+          headingEl.className = 'footer-col-heading';
+          headingEl.textContent = heading.textContent.trim();
+          col.append(headingEl);
+        }
+        // Append the link list
+        const ul = cell.querySelector('ul');
+        if (ul) col.append(ul);
+        grid.append(col);
+      });
+      const wrapper = sections[0].querySelector(':scope > div');
+      if (wrapper) {
+        wrapper.textContent = '';
+        wrapper.append(grid);
+      }
     }
   }
 
@@ -64,10 +102,9 @@ export default async function decorate(block) {
     links.forEach((link) => {
       const text = link.textContent.trim().toLowerCase();
       const key = Object.keys(SOCIAL_MAP).find((k) => text.includes(k));
-      if (key) {
-        socialRow.append(buildSocialIcon(key, SOCIAL_MAP[key]));
-      }
+      if (key) socialRow.append(buildSocialIcon(key, SOCIAL_MAP[key]));
     });
+    // Fallback if no text-based links found
     if (socialRow.children.length === 0) {
       Object.entries(SOCIAL_MAP).forEach(([key, href]) => {
         socialRow.append(buildSocialIcon(key, href));
@@ -83,6 +120,17 @@ export default async function decorate(block) {
   // Section 3: Legal links + copyright
   if (sections[2]) {
     sections[2].classList.add('footer-legal');
+    // Wrap legal links in a flex container
+    const legalP = sections[2].querySelector('p');
+    if (legalP) {
+      const legalLinks = [...legalP.querySelectorAll('a')];
+      if (legalLinks.length > 0) {
+        const legalRow = document.createElement('div');
+        legalRow.className = 'footer-legal-links';
+        legalLinks.forEach((a) => legalRow.append(a));
+        legalP.replaceWith(legalRow);
+      }
+    }
   }
 
   block.append(footer);
