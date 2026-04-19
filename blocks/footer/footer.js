@@ -37,44 +37,76 @@ const BOLD_LINKS = ['make a complaint', 'send us a compliment'];
 
 /* ── Helpers ── */
 
+function appendColumn(nav, cell) {
+  const col = document.createElement('div');
+  col.className = 'footer-nav-column';
+
+  const headingSrc = cell.querySelector('strong, h6, h3, h2');
+  if (headingSrc) {
+    const h3 = document.createElement('h3');
+    h3.textContent = headingSrc.textContent.trim();
+    col.append(h3);
+  }
+
+  const ul = cell.querySelector('ul');
+  if (ul) {
+    ul.querySelectorAll('li a').forEach((a) => {
+      if (BOLD_LINKS.includes(a.textContent.trim().toLowerCase())) {
+        a.classList.add('bold');
+      }
+    });
+    col.append(ul);
+  }
+
+  nav.append(col);
+}
+
 function buildNavGrid(section) {
   const nav = document.createElement('nav');
   nav.className = 'footer-nav';
   nav.setAttribute('aria-label', 'Footer navigation');
 
-  // Find column cells: columns block (div > div > div children) or direct divs with ul
+  // Strategy 1: Columns block (div.columns > div > div children)
   const columnsBlock = section.querySelector('.columns');
-  let cells;
   if (columnsBlock) {
     const row = columnsBlock.querySelector(':scope > div');
-    cells = row ? [...row.children] : [];
-  } else {
-    cells = [...section.querySelectorAll('div')].filter(
-      (d) => d.querySelector('ul') && (d.querySelector('strong') || d.querySelector('h6')),
-    );
+    const cells = row ? [...row.children] : [];
+    cells.forEach((cell) => appendColumn(nav, cell));
+    return nav;
   }
 
-  cells.forEach((cell) => {
+  // Strategy 2: Separate divs that each contain heading + list
+  const cellDivs = [...section.querySelectorAll('div')].filter(
+    (d) => d.querySelector('ul') && (d.querySelector('strong') || d.querySelector('h6')),
+  );
+  if (cellDivs.length >= 2) {
+    cellDivs.forEach((cell) => appendColumn(nav, cell));
+    return nav;
+  }
+
+  // Strategy 3: Flat structure — heading/list pairs in a single div
+  // (da.live outputs: <p><strong>Heading</strong></p><ul>...</ul> sequentially)
+  const container = section.querySelector(':scope > div') || section;
+  const headings = container.querySelectorAll('p > strong, h6, h3, h2');
+  headings.forEach((heading) => {
     const col = document.createElement('div');
     col.className = 'footer-nav-column';
 
-    // Heading
-    const headingSrc = cell.querySelector('strong, h6, h3, h2');
-    if (headingSrc) {
-      const h3 = document.createElement('h3');
-      h3.textContent = headingSrc.textContent.trim();
-      col.append(h3);
-    }
+    const h3 = document.createElement('h3');
+    h3.textContent = heading.textContent.trim();
+    col.append(h3);
 
-    // Link list
-    const ul = cell.querySelector('ul');
-    if (ul) {
-      ul.querySelectorAll('li a').forEach((a) => {
+    // Find the next sibling <ul> after this heading's parent
+    const parent = heading.closest('p') || heading;
+    let next = parent.nextElementSibling;
+    while (next && next.tagName !== 'UL') next = next.nextElementSibling;
+    if (next && next.tagName === 'UL') {
+      next.querySelectorAll('li a').forEach((a) => {
         if (BOLD_LINKS.includes(a.textContent.trim().toLowerCase())) {
           a.classList.add('bold');
         }
       });
-      col.append(ul);
+      col.append(next);
     }
 
     nav.append(col);
