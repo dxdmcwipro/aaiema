@@ -76,13 +76,33 @@ footer .footer-social svg {
 }
 
 footer .footer-social .shielded-site {
-  margin-left: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  margin-left: 6px;
+  border: 1.5px solid var(--footer-text);
+  border-radius: 3px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--footer-text);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  gap: 5px;
+  transition: opacity 0.15s;
+}
+
+footer .footer-social .shielded-site:hover {
+  opacity: 0.65;
+}
+
+footer .footer-social .shielded-site svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--footer-text);
 }
 
 footer .footer-social .shielded-site img {
-  height: 28px;
+  height: 24px;
   width: auto;
 }
 
