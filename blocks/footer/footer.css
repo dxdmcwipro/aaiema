@@ -7,7 +7,7 @@
   --footer-bg: #ffd100;
   --footer-text: #131313;
   --footer-link-color: #131313;
-  --footer-link-hover: #000000;
+  --footer-link-hover: #000;
   --footer-font-size: 13px;
   --footer-heading-size: 14px;
   --footer-max-width: 1200px;
@@ -43,7 +43,7 @@ footer .footer-nav-column strong {
   font-size: var(--footer-heading-size);
   font-weight: 700;
   color: var(--footer-text);
-  margin: 0 0 12px 0;
+  margin: 0 0 12px;
   padding: 0;
   line-height: 1.4;
 }
@@ -58,27 +58,6 @@ footer .footer-nav-column ul li {
   margin-bottom: 4px;
 }
 
-footer .footer-nav-column ul li a,
-footer .footer-nav-column p a {
-  color: var(--footer-link-color);
-  text-decoration: none;
-  font-size: var(--footer-font-size);
-  line-height: 1.6;
-}
-
-footer .footer-nav-column ul li a:hover,
-footer .footer-nav-column p a:hover {
-  text-decoration: underline;
-  color: var(--footer-link-hover);
-}
-
-/* Bold links (Make a complaint, Send us a compliment) */
-footer .footer-nav-column ul li a.bold,
-footer .footer-nav-column ul li.bold a,
-footer .footer-nav-column ul li a[data-bold] {
-  font-weight: 700;
-}
-
 /* ── Social icons row ── */
 footer .footer-social {
   display: flex;
@@ -86,8 +65,8 @@ footer .footer-social {
   justify-content: center;
   gap: 16px;
   padding: 20px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgb(0 0 0 / 15%);
+  border-bottom: 1px solid rgb(0 0 0 / 15%);
 }
 
 footer .footer-social a {
@@ -147,6 +126,28 @@ footer .footer-legal a:hover {
   text-decoration: underline;
 }
 
+/* ── Nav column link styles (more specific — must follow social/legal a rules) ── */
+footer .footer-nav-column p a,
+footer .footer-nav-column ul li a {
+  color: var(--footer-link-color);
+  text-decoration: none;
+  font-size: var(--footer-font-size);
+  line-height: 1.6;
+}
+
+footer .footer-nav-column p a:hover,
+footer .footer-nav-column ul li a:hover {
+  text-decoration: underline;
+  color: var(--footer-link-hover);
+}
+
+/* Bold links (Make a complaint, Send us a compliment) */
+footer .footer-nav-column ul li a.bold,
+footer .footer-nav-column ul li.bold a,
+footer .footer-nav-column ul li a[data-bold] {
+  font-weight: 700;
+}
+
 /* ── Copyright ── */
 footer .footer-copyright {
   text-align: center;
@@ -163,7 +164,7 @@ footer .footer-copyright p {
 @media (width < 900px) {
   footer .footer-nav {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px 24px;
+    gap: 24px;
   }
 }
 
