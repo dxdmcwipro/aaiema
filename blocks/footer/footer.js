@@ -17,5 +17,19 @@ export default async function decorate(block) {
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
+  // Decorate sections: links, social, legal
+  const sections = footer.querySelectorAll(':scope > div');
+  const classes = ['footer-links', 'footer-social', 'footer-legal'];
+  sections.forEach((section, i) => {
+    if (classes[i]) section.classList.add(classes[i]);
+  });
+
+  // Decorate link columns within the links section
+  const linksSection = footer.querySelector('.footer-links');
+  if (linksSection) {
+    const columns = linksSection.querySelectorAll(':scope > div > div');
+    columns.forEach((col) => col.classList.add('footer-col'));
+  }
+
   block.append(footer);
 }
