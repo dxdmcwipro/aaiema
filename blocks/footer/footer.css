@@ -58,59 +58,6 @@ footer .footer-nav-column ul li {
   margin-bottom: 4px;
 }
 
-/* ── All base anchor styles (least → most specific, no hover) ── */
-footer .footer-social a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--footer-text);
-  text-decoration: none;
-  transition: opacity 0.15s ease;
-}
-
-footer .footer-legal a {
-  color: var(--footer-link-color);
-  text-decoration: none;
-  font-size: 12px;
-  padding: 0 12px;
-  border-right: 1px solid var(--footer-text);
-  line-height: 1.2;
-}
-
-footer .footer-legal a:last-child {
-  border-right: none;
-}
-
-footer .footer-nav-column p a,
-footer .footer-nav-column ul li a {
-  color: var(--footer-link-color);
-  text-decoration: none;
-  font-size: var(--footer-font-size);
-  line-height: 1.6;
-}
-
-/* Bold nav links */
-footer .footer-nav-column ul li a.bold,
-footer .footer-nav-column ul li.bold a,
-footer .footer-nav-column ul li a[data-bold] {
-  font-weight: 700;
-}
-
-/* ── All hover states (after all base a rules) ── */
-footer .footer-social a:hover {
-  opacity: 0.65;
-}
-
-footer .footer-legal a:hover {
-  text-decoration: underline;
-}
-
-footer .footer-nav-column p a:hover,
-footer .footer-nav-column ul li a:hover {
-  text-decoration: underline;
-  color: var(--footer-link-hover);
-}
-
 /* ── Social icons row layout ── */
 footer .footer-social {
   display: flex;
@@ -159,6 +106,69 @@ footer .footer-copyright {
 
 footer .footer-copyright p {
   margin: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   All anchor rules grouped and ordered by ascending specificity
+   so stylelint no-descending-specificity is satisfied.
+   ────────────────────────────────────────────────────────────── */
+
+/* (0,1,2) base – social a */
+footer .footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--footer-text);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+/* (0,1,2) base – legal a */
+footer .footer-legal a {
+  color: var(--footer-link-color);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 0 12px;
+  border-right: 1px solid var(--footer-text);
+  line-height: 1.2;
+}
+
+/* (0,1,3) / (0,1,4) base – nav column links */
+footer .footer-nav-column p a,
+footer .footer-nav-column ul li a {
+  color: var(--footer-link-color);
+  text-decoration: none;
+  font-size: var(--footer-font-size);
+  line-height: 1.6;
+}
+
+/* (0,2,2) pseudo – social hover */
+footer .footer-social a:hover {
+  opacity: 0.65;
+}
+
+/* (0,2,2) pseudo – legal last-child */
+footer .footer-legal a:last-child {
+  border-right: none;
+}
+
+/* (0,2,2) pseudo – legal hover */
+footer .footer-legal a:hover {
+  text-decoration: underline;
+}
+
+/* (0,2,3) / (0,2,4) pseudo – nav column hover */
+footer .footer-nav-column p a:hover,
+footer .footer-nav-column ul li a:hover {
+  text-decoration: underline;
+  color: var(--footer-link-hover);
+}
+
+/* (0,2,4) – bold nav links (Make a complaint, Send us a compliment) */
+footer .footer-nav-column ul li a.bold,
+footer .footer-nav-column ul li.bold a,
+footer .footer-nav-column ul li a[data-bold] {
+  font-weight: 700;
 }
 
 /* ── Responsive: tablet ── */
