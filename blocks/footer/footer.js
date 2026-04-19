@@ -30,17 +30,22 @@ const SOCIAL_MAP = {
 };
 
 /**
- * Find column cells in the fragment - looks for table cells (td) or
- * column divs that each contain a heading + list of links together.
+ * Find column cells in the fragment - looks for the columns block
+ * structure where each cell div contains a heading + list of links.
  */
 function findColumnCells(section) {
-  // Try table cells first (columns block renders as div > div > div)
-  const rows = section.querySelectorAll(':scope > div > div > div');
-  if (rows.length >= 4) return [...rows];
+  // EDS columns block: .columns > div (row) > div (cells)
+  const columnsBlock = section.querySelector('.columns');
+  if (columnsBlock) {
+    const row = columnsBlock.querySelector(':scope > div');
+    if (row) return [...row.children];
+  }
 
-  // Fallback: direct child divs that contain both a heading and a list
-  const divs = [...section.querySelectorAll(':scope > div > div')];
-  const candidates = divs.filter((d) => d.querySelector('ul') && (d.querySelector('strong') || d.querySelector('h6') || d.querySelector('h2') || d.querySelector('h3')));
+  // Fallback: nested divs containing both a heading and a list
+  const allDivs = [...section.querySelectorAll('div')];
+  const candidates = allDivs.filter((d) => d.querySelector('ul')
+    && (d.querySelector('strong') || d.querySelector('h6'))
+    && !d.querySelector('div > ul'));
   if (candidates.length >= 4) return candidates;
 
   return [...section.querySelectorAll(':scope div > div')].filter((d) => d.querySelector('ul'));
@@ -100,12 +105,31 @@ export default async function decorate(block) {
     socialRow.className = 'footer-social-row';
     const links = sections[1].querySelectorAll('a');
     links.forEach((link) => {
+      // Check if this is an image link (e.g. Shielded Site icon)
+      const img = link.querySelector('img');
+      if (img) {
+        const imgLink = document.createElement('a');
+        imgLink.href = link.href;
+        imgLink.className = 'footer-shield-link';
+        imgLink.setAttribute('target', '_blank');
+        imgLink.setAttribute('rel', 'noopener noreferrer');
+        imgLink.setAttribute('aria-label', img.alt || 'Shielded Site');
+        const clonedImg = document.createElement('img');
+        clonedImg.src = img.src;
+        clonedImg.alt = img.alt || 'Shielded Site Icon';
+        clonedImg.width = 32;
+        clonedImg.height = 32;
+        clonedImg.loading = 'lazy';
+        imgLink.append(clonedImg);
+        socialRow.append(imgLink);
+        return;
+      }
       const text = link.textContent.trim().toLowerCase();
       const key = Object.keys(SOCIAL_MAP).find((k) => text.includes(k));
       if (key) socialRow.append(buildSocialIcon(key, SOCIAL_MAP[key]));
     });
-    // Fallback if no text-based links found
-    if (socialRow.children.length === 0) {
+    // Fallback if no text-based links found (excluding image links)
+    if (!socialRow.querySelector('.footer-social-btn')) {
       Object.entries(SOCIAL_MAP).forEach(([key, href]) => {
         socialRow.append(buildSocialIcon(key, href));
       });

@@ -87,6 +87,16 @@ footer .footer .footer-social-btn svg {
   height: 18px;
 }
 
+footer .footer .footer-shield-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+footer .footer .footer-shield-link:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
 /* ---- Legal links ---- */
 footer .footer .footer-legal {
   margin-top: 32px;
